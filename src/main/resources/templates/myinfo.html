@@ -1,0 +1,272 @@
+<!--<html layout:decorate="~{layout}">-->
+<!--<div layout:fragment="content" class="container my-3">-->
+<!--    <h1>User Information</h1>-->
+<!--    <p>User ID: <span th:text="${userid}"></span></p>-->
+<!--    <p>User Password: <span th:text="${userpasswd}"></span></p>-->
+<!--    <a th:href="@{/mypage/studio_shiny}" class="btn btn-primary">샤이니 앱 업로드</a>-->
+<!--    <a th:href="@{/mypage/delete_user}" class="btn btn-primary">회원 삭제</a>-->
+<!--</div>-->
+<!--<script layout:fragment="script" type='text/javascript'>-->
+
+<!--</script>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Information</title>
+    <!-- Add Bootstrap CSS if not already included -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <style>
+        .spinner-border {
+            display: inline-block;
+            width: 2rem;
+            height: 2rem;
+            vertical-align: text-bottom;
+            border: 0.25em solid currentColor;
+            border-right-color: transparent;
+            border-radius: 50%;
+            animation: spinner-border 0.75s linear infinite;
+        }
+
+        @keyframes spinner-border {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container my-3">
+    <h1>User Information</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <p>User ID: <span th:text="${userid}"></span></p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <a th:href="@{/mypage/studio_shiny}" class="btn btn-primary">Upload Shiny App</a>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">
+                    <!-- Button to trigger modal -->
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal">
+                        Delete Account
+                    </button>
+                </div>
+                <div class="col-md-4" th:if="${hasContainer}">
+                    <!-- Button to trigger modal -->
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#containerDeleteModal">
+                        R컨테이너 삭제
+                    </button>
+                </div>
+                <div class="col-md-4" th:unless="${hasContainer}">
+                    <!-- Button to trigger modal -->
+                    <button type="button"  class="btn btn-success" data-toggle="modal" data-target="#containerCreateModal">
+                        R컨테이너 생성
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">확인</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                정말 삭제하시겠습니까?
+            </div>
+            <div class="modal-footer">
+                <!-- Button to cancel deletion -->
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                <!-- Button to confirm deletion -->
+                <button type="button" class="btn btn-primary" id="confirmDelete">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Delete Container Modal -->
+<div class="modal fade" id="containerDeleteModal" tabindex="-1" role="dialog" aria-labelledby="containerDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="containerDeleteModalLabel">확인</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                정말 삭제하시겠습니까?
+            </div>
+            <div class="modal-footer">
+                <!-- Button to cancel deletion -->
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                <!-- Button to confirm deletion -->
+                <button type="button" class="btn btn-primary" id="containerDelete">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--CreateModel-->
+<div class="modal fade" id="containerCreateModal" tabindex="-1" role="dialog" aria-labelledby="containerCreateModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="containerCreateModalLabel">비밀번호 입력</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <textarea id="descriptionInput" class="form-control" placeholder="비밀번호를 설정하세요"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary" id="saveDescriptionButton">저장</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <!-- 로딩 스피너 -->
+                <div id="loadingSpinner" class="spinner-border" role="status">
+                    <span class="sr-only">Loading</span>
+                </div>
+                <!-- 로딩 메시지 -->
+                <p>R컨테이너를 생성중입니다.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Bootstrap JS and jQuery if not already included -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+    // Handle click event on confirm deletion button
+    $('#confirmDelete').click(function(){
+        // Send GET request to /mypage/delete_user
+        window.location.href = '/mypage/delete_user';
+    });
+
+    // Handle click event on confirm deletion button
+    $('#containerDelete').click(function(){
+        // Send GET request to /rstudio/delete
+        window.location.href = '/rstudio/delete';
+    });
+
+    $('#saveDescriptionButton').click(function(){
+        // Get the text value from the textarea
+        var password = $('#descriptionInput').val();
+        var headerName = $("meta[name='_csrf_header']").attr('content');
+        var token = $("meta[name='_csrf']").attr('content');
+
+        // Check if headerName and token are defined
+        if (headerName && token) {
+            // Show loading modal
+            $('#loadingModal').modal('show');
+
+            // Set initial progress bar value
+            $('#progressBar').css('width', '0%').attr('aria-valuenow', 0);
+
+            // Show spinner
+            $('#loadingSpinner').addClass('spinner-border');
+
+            var xhr = $.ajax({
+                type: 'POST',
+                url: '/rstudio/create',
+                beforeSend: function(xhr){
+                    xhr.setRequestHeader(headerName, token);
+                },
+                data: JSON.stringify({ password: password }), // Ensure data is sent as JSON
+                contentType: 'application/json',
+                success: function(response) {
+                    // If successful, close the modal and redirect to the response URL
+                    setTimeout(function() {
+                        $('#loadingModal').modal('hide');
+                        $('#containerCreateModal').modal('hide');
+                        window.location.href = '/';
+                    }, 6000);
+                },
+                error: function(xhr, status, error) {
+                    // Hide loading modal
+                    $('#loadingModal').modal('hide');
+
+                    // Handle error if necessary
+                    console.error('Error:', error);
+                }
+            });
+        } else {
+            console.error('CSRF header or token is undefined.');
+        }
+    });
+});
+
+</script>
+
+<!--<script type="text/javascript">-->
+<!--    $(document).ready(function(){-->
+<!--        // Handle click event on confirm deletion button-->
+<!--        $('#confirmDelete').click(function(){-->
+<!--            // Send GET request to /mypage/delete_user-->
+<!--            window.location.href = '/mypage/delete_user';-->
+<!--        });-->
+<!--    });-->
+<!--    $(document).ready(function(){-->
+<!--        // Handle click event on confirm deletion button-->
+<!--        $('#containerDelete').click(function(){-->
+<!--            // Send GET request to /mypage/delete_user-->
+<!--            window.location.href = '/rstudio/delete';-->
+<!--        });-->
+<!--    });-->
+
+<!--    $(document).ready(function(){-->
+<!--    // Handle click event on save button-->
+<!--        $('#saveDescriptionButton').click(function(){-->
+<!--        // Get the text value from the textarea-->
+<!--        var password = $('#descriptionInput').val();-->
+
+<!--        // Send POST request to the specified path with the password data-->
+<!--        $.ajax({-->
+<!--            type: 'POST',-->
+<!--            url: '/rstudio/create',-->
+<!--            data: { password: password },-->
+<!--            success: function(response) {-->
+<!--                // If successful, close the modal and redirect to the response URL-->
+<!--                $('#containerCreateModal').modal('hide');-->
+<!--                window.location.href = '/rstudio/create';-->
+<!--            },-->
+<!--            error: function(xhr, status, error) {-->
+<!--                // Handle error if necessary-->
+<!--                console.error('Error:', error);-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+<!--});-->
+<!--</script>-->
+</body>
+</html>

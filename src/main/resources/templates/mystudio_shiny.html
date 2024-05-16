@@ -1,0 +1,326 @@
+<html layout:decorate="~{layout}">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+</head>
+<div layout:fragment="content" class="container my-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">내 스튜디오 샤이니 파일</h5>
+                        <div class="list-group studio-card">
+                            <div th:each="item : ${studio_list}">
+                                <button type="button" id="openPopupButton" class="list-group-item list-group-item-action forward-button" th:text="${item}"></button>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            Card footer
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-1">
+                <div id="popupModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2>설명 입력</h2>
+                        <textarea id="descriptionInput" placeholder="설명을 입력하세요"></textarea>
+                        <button id="saveDescriptionButton">저장</button>
+                    </div>
+                </div>
+                <div class="arrow-button-container">
+                    <button class="btn btn-link arrow-button">&#9650;</button>
+                    <button class="btn btn-link arrow-button">&#9660;</button>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">샤이니 서버</h5>
+                        <div class="list-group shiny-card">
+                            <div th:each="item : ${shiny_list}">
+                                <button type="button" id="actionButton" class="list-group-item list-group-item-action" data-bs-toggle="dropdown" th:text="${item}"></button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item revoke-button"  href="#">회수</a></li>
+                                    <li><a class="dropdown-item delete-button" href="#">삭제</a></li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <div class="card-footer">
+                            Card footer
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script layout:fragment="script" type='text/javascript'>
+    var actionButton = document.getElementById("actionButton");
+    if(actionButton) {
+        actionButton.addEventListener("click", function() {
+            var dropdown = document.getElementById("actionDropdown");
+            dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+        });
+    }
+// 버튼 클릭시 popup 업로드
+var selectedItem = "";
+
+
+$(document).ready(function() {
+    // item 버튼 클릭 시
+    $(document).on('click', '.list-group-item', function(e) {
+        e.preventDefault(); // 기본 동작 중지
+
+        // 클릭한 버튼의 텍스트를 가져와 전역 변수에 저장
+        selectedItem = $(this).text().trim();
+        console.log("Selected item:", selectedItem);
+    });
+});
+
+// 팝업 열기
+$(document).ready(function() {
+        // openPopupButton을 클릭하면 모달 창이 나타나고, 클릭된 버튼의 텍스트 값을 전역 변수에 저장
+        $(document).on('click', '.forward-button', function() {
+            var itemText = $(this).text().trim(); // 클릭된 버튼의 텍스트 가져오기
+            selectedItem = itemText; // 전역 변수에 저장
+            $('#popupModal').show(); // 모달 창 표시
+        });
+
+        // 모달 닫기 버튼 클릭 시 모달 창 닫기
+        $(document).on('click', '.close', function() {
+            $('#popupModal').hide(); // 모달 창 닫기
+        });
+
+        // 저장 버튼 클릭 시 Ajax 요청 등 필요한 작업 수행
+        $('#saveDescriptionButton').click(function() {
+        var description = $('#descriptionInput').val(); // 설명 입력란의 값 가져오기
+        var header = $("meta[name='_csrf_header']").attr('content');
+        var token = $("meta[name='_csrf']").attr('content');
+        // 전송할 데이터
+        var data = {
+            selectedItem: selectedItem,
+            description: description
+        };
+
+         // Ajax 요청
+        $.ajax({
+            type: 'POST',
+            url: '/shiny/upload', // 서버의 엔드포인트
+            contentType: 'application/json', // JSON 형식으로 데이터 전송
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
+            data: JSON.stringify(data), // JSON 형식으로 데이터 전송
+            success: function(response) {
+                // 성공 시 처리할 내용 작성
+                console.log('서버 응답:', response);
+
+                // 모달 창 닫기
+                $('#popupModal').hide();
+            },
+            error: function(xhr, status, error) {
+                // 오류 발생 시 처리
+                console.error('데이터 전송 중 오류가 발생했습니다.');
+            }
+        });
+    });
+
+});
+
+// 전송 클릭 시 Ajax 요청
+$(document).ready(function() {
+<!--    $(document).on('click', '.forward-button', function() {-->
+    $(document).on('click', '#saveDescriptionButton', function(){
+        var data = { item: selectedItem }; // 서버로 전송할 데이터
+        var header = $("meta[name='_csrf_header']").attr('content');
+        var token = $("meta[name='_csrf']").attr('content');
+
+        $.ajax({
+            type: 'POST',
+            url: '/mypage/studio_shiny/upload', // 서버의 엔드포인트
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
+            contentType: 'application/json', // JSON 형식으로 데이터 전송
+            data: JSON.stringify(data), // JSON 형식으로 데이터 전송
+            success: function(responseData) {
+
+
+                var studioListHtml = '';
+                $.each(responseData.directory_list, function(index, item) {
+                    studioListHtml += '<button type="button" class="list-group-item list-group-item-action forward-button">' + item + '</button>';
+                });
+                $('.studio-card').html(studioListHtml);
+
+                var shinyServerHtml = '';
+                $.each(responseData.shiny_list, function(index, item) {
+    shinyServerHtml += '<button type="button" id="actionButton" class="list-group-item list-group-item-action" data-bs-toggle="dropdown">' + item + '</button>';
+    shinyServerHtml += '<ul class="dropdown-menu">';
+    shinyServerHtml += '<li><a class="dropdown-item revoke-button" href="#">회수</a></li>';
+    shinyServerHtml += '<li><a class="dropdown-item delete-button" href="#">삭제</a></li>';
+    shinyServerHtml += '</ul>';
+    shinyServerHtml += '</div>';
+});
+                $('.shiny-card').html(shinyServerHtml); // 샤이니 서버 목록 업데이트
+
+
+            },
+            error: function() {
+                // 오류 발생 시 처리
+                console.error('Ajax 요청 중 오류가 발생했습니다.');
+            }
+        });
+    });
+});
+
+    // 문서 로드 후 실행
+    $(document).ready(function() {
+        // 회수 버튼 클릭 시
+        $(document).on('click', '.revoke-button', function() {
+
+            // 클릭한 버튼의 부모 요소에 해당하는 샤이니 항목 가져오기
+            var data = { item: selectedItem }; // 서버로 전송할 데이터
+
+            console.log("Item value:", data); // 로그로 값 출력
+
+            var header = $("meta[name='_csrf_header']").attr('content');
+            var token = $("meta[name='_csrf']").attr('content');
+            // Ajax 요청
+            $.ajax({
+                type: 'POST',
+                url: '/mypage/studio_shiny/revoke', // 회수를 처리할 엔드포인트 URL
+                beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+                },
+                contentType: 'application/json', // JSON 형식으로 데이터 전송
+
+                data: JSON.stringify(data), // JSON 형식으로 데이터 전송
+
+                success: function(responseData) {
+
+
+                var studioListHtml = '';
+                $.each(responseData.directory_list, function(index, item) {
+                    studioListHtml += '<button type="button" class="list-group-item list-group-item-action forward-button">' + item + '</button>';
+                });
+                $('.studio-card').html(studioListHtml);
+
+                var shinyServerHtml = '';
+                $.each(responseData.shiny_list, function(index, item) {
+    shinyServerHtml += '<button type="button" id="actionButton" class="list-group-item list-group-item-action" data-bs-toggle="dropdown">' + item + '</button>';
+    shinyServerHtml += '<ul class="dropdown-menu">';
+    shinyServerHtml += '<li><a class="dropdown-item revoke-button" href="#">회수</a></li>';
+    shinyServerHtml += '<li><a class="dropdown-item delete-button" href="#">삭제</a></li>';
+    shinyServerHtml += '</ul>';
+    shinyServerHtml += '</div>';
+});
+                $('.shiny-card').html(shinyServerHtml); // 샤이니 서버 목록 업데이트
+
+
+                    // 서버로부터 성공적인 응답을 받았을 때 실행할 코드 작성
+                    // 예를 들어, 성공 메시지를 출력하거나 UI를 업데이트하는 등의 작업 수행 가능
+                    console.log('회수 성공!');
+
+
+                $.ajax({
+                    type: 'POST', // 예시로 POST 요청 사용
+                    url: '/shiny/revoke', // 다른 경로로의 요청
+                    data: data, // JSON 형식으로 데이터 전송
+                    beforeSend: function(xhr){
+                    xhr.setRequestHeader(header, token);
+                    },
+                    success: function(response) {
+                        console.log('다른 경로 요청 성공!');
+                    },
+                    error: function(xhr, status, error) {
+                        // 다른 경로로의 요청이 실패했을 때 실행할 코드 작성
+                        console.error('다른 경로 요청 실패:', error);
+                    }
+                });
+                },
+                error: function(xhr, status, error) {
+                    // Ajax 요청이 실패했을 때 실행할 코드 작성
+                    console.error('회수 실패:', error);
+                }
+            });
+        });
+
+        // 삭제 버튼 클릭 시
+        $(document).ready(function() {
+        $(document).on('click', '.delete-button', function() {
+
+            // 클릭한 버튼의 부모 요소에 해당하는 샤이니 항목 가져오기
+            var data = { item: selectedItem }; // 서버로 전송할 데이터
+
+            console.log("Item value:", data); // 로그로 값 출력
+
+            var header = $("meta[name='_csrf_header']").attr('content');
+            var token = $("meta[name='_csrf']").attr('content');
+            // Ajax 요청
+            $.ajax({
+                type: 'POST',
+                url: '/mypage/studio_shiny/delete', // 회수를 처리할 엔드포인트 URL
+                beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+                },
+                contentType: 'application/json', // JSON 형식으로 데이터 전송
+
+                data: JSON.stringify(data), // JSON 형식으로 데이터 전송
+
+                success: function(responseData) {
+
+
+                var studioListHtml = '';
+                $.each(responseData.directory_list, function(index, item) {
+                    studioListHtml += '<button type="button" class="list-group-item list-group-item-action forward-button">' + item + '</button>';
+                });
+                $('.studio-card').html(studioListHtml);
+
+                var shinyServerHtml = '';
+                $.each(responseData.shiny_list, function(index, item) {
+    shinyServerHtml += '<button type="button" id="actionButton" class="list-group-item list-group-item-action" data-bs-toggle="dropdown">' + item + '</button>';
+    shinyServerHtml += '<ul class="dropdown-menu">';
+    shinyServerHtml += '<li><a class="dropdown-item revoke-button" href="#">회수</a></li>';
+    shinyServerHtml += '<li><a class="dropdown-item delete-button" href="#">삭제</a></li>';
+    shinyServerHtml += '</ul>';
+    shinyServerHtml += '</div>';
+});
+                $('.shiny-card').html(shinyServerHtml); // 샤이니 서버 목록 업데이트
+
+
+                    // 서버로부터 성공적인 응답을 받았을 때 실행할 코드 작성
+                    // 예를 들어, 성공 메시지를 출력하거나 UI를 업데이트하는 등의 작업 수행 가능
+                    console.log('회수 성공!');
+
+
+                $.ajax({
+                    type: 'POST', // 예시로 POST 요청 사용
+                    url: '/shiny/revoke', // 다른 경로로의 요청
+                    data: data, // JSON 형식으로 데이터 전송
+                    beforeSend: function(xhr){
+                    xhr.setRequestHeader(header, token);
+                    },
+                    success: function(response) {
+                        console.log('다른 경로 요청 성공!');
+                    },
+                    error: function(xhr, status, error) {
+                        // 다른 경로로의 요청이 실패했을 때 실행할 코드 작성
+                        console.error('다른 경로 요청 실패:', error);
+                    }
+                });
+                },
+                error: function(xhr, status, error) {
+                    // Ajax 요청이 실패했을 때 실행할 코드 작성
+                    console.error('회수 실패:', error);
+                }
+            });
+        });
+    });
+});
+</script>
+</html>

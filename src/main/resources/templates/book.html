@@ -1,0 +1,36 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
+    <form th:action="@{/book}" method="post">
+        <h3>네이버 오픈 API를 활용한 도서 목록</h3>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2" name="text">
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">검색</button>
+        </div>
+
+        <link rel="stylesheet" type="text/css" href="/style.css">
+
+        <table>
+            <tr>
+                <th>ISBN</th>
+                <th>이미지</th>
+                <th>제목</th>
+                <th>저자/출판사</th>
+                <th>출판일</th>
+            </tr>
+            <tr th:each="book:${books}">
+                <td th:text="${book.isbn}"></td>
+                <td><img th:src="${book.image}" th:alt="${book.title}"></td>
+                <td><a th:href="${book.link}" th:text="${book.title}"></a></td>
+                <td th:text="${book.author + '/' + book.publisher}"></td>
+                <td th:text="${book.pubdate}"></td>
+            </tr>
+        </table>
+
+
+    </form>
+</div>
+<script layout:fragment="script" type='text/javascript'>
+
+</script>
+
+</html>

@@ -1,0 +1,50 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.1'
+	id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.mysite'
+version = '0.0.2'
+
+java {
+	sourceCompatibility = '19'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+//	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	compileOnly 'org.projectlombok:lombok' 
+	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	testImplementation 'org.junit.jupiter:junit-jupiter' 
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	implementation 'org.commonmark:commonmark:0.21.0'
+//	runtimeOnly 'org.postgresql:postgresql'
+	implementation 'com.jcraft:jsch:0.1.55'
+	//mysql 연결을 위해
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	//redis 연결을 위해
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	//세션 데이터를 redis로 연결
+	implementation 'org.springframework.session:spring-session-data-redis'
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

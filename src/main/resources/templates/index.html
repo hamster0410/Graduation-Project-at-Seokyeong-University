@@ -1,0 +1,93 @@
+<html layout:decorate="~{layout}">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body, h1, h2, h3, h4, h5, h6 {font-family: "Lato", sans-serif}
+        .w3-bar, h1, button {font-family: "Montserrat", sans-serif}
+        .w3-blue {background-color: #2196F3!important}
+        .w3-opacity, .w3-hover-opacity:hover {opacity: 0.60;}
+        .w3-hover-opacity {transition: 0.3s;}
+
+    </style>
+</head>
+<div layout:fragment="content" class="container my-3">
+    <!-- Header -->
+    <header class="w3-container bg-primary text-white text-center" style="padding: 20px;">
+        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="/image/picture1.jpg" class="d-block mx-auto img-fluid " style="max-width: 40%;" alt="a">
+                </div>
+                <div class="carousel-item">
+                    <img src="/image/picture2.jpg" class="d-block mx-auto img-fluid " style="max-width: 40%;" alt="b">
+                </div>
+                <div class="carousel-item">
+                    <img src="/image/picture3.png" class="d-block mx-auto img-fluid " style="max-width: 40%;" alt="c">
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </header>
+    <!-- 첫 번째 그리드: R 언어 -->
+    <div class="container-fluid bg-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h1>R 언어</h1>
+                    <p class="lead">R은 데이터 분석 및 시각화에 널리 사용되는 프로그래밍 언어입니다. </p>
+                    <p class="lead">통계 분석, 머신러닝 등의 분야에서 주로 사용됩니다.</p>
+                    <p>R은 풍부한 패키지 생태계와 강력한 시각화 도구를 제공하여 데이터 분석가 및 연구자들에게 매우 인기가 있습니다.</p>
+                </div>
+                <div class="col-lg-4 d-flex align-items-center justify-content-center">
+                    <img src="/image/R로고.svg" class="img-fluid" alt="R logo">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 두 번째 그리드: 샤이니 프레임워크 -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 d-flex align-items-center justify-content-center">
+                    <img src="/image/shiny로고.ppm" class="img-fluid" alt="shiny logo">
+                </div>
+                <div class="col-lg-8">
+                    <h1>샤이니 프레임워크</h1>
+                    <p class="lead">샤이니는 R 언어로 대화형 웹 애플리케이션을 만들기 위한 프레임워크입니다.</p>
+                    <p class="lead">R 코드를 이용하여 인터랙티브한 그래픽 및 데이터 시각화를 제공합니다.</p>
+                    <p>샤이니를 사용하면 R 언어로 작성한 분석 결과를 웹상에서 쉽게 공유하고, 사용자와 상호작용할 수 있는 다양한 웹 어플리케이션을 개발할 수 있습니다.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quote of the day -->
+    <div class="container-fluid bg-dark text-white py-5">
+        <div class="container text-center">
+            <h1 class="w3-margin w3-xlarge">Viva La Vida</h1>
+        </div>
+    </div>
+
+    <script th:if="${hasShinyDirectory eq false}">
+        alert("샤이니 디렉토리가 없습니다. 가서 만들어 오세요 ");
+    </script>
+
+</div>
+
+
+<script layout:fragment="script" type='text/javascript'>
+
+</script>
+
+</html>
