@@ -32,6 +32,7 @@ public class JschImplement {
         try {
             //JSch 객체 생성
             JSch jsch = new JSch();
+            jsch.addIdentity("src/main/resources/server_key/myncp_key.pem");
             session = jsch.getSession(server_user, host, 22);
             //패스워드 설정
             session.setPassword(server_passwd);
@@ -86,6 +87,7 @@ public class JschImplement {
         try {
             //JSch 객체 생성
             JSch jsch = new JSch();
+            jsch.addIdentity("src/main/resources/server_key/myncp_key.pem");
             session = jsch.getSession(server_user, host, 22);
             //패스워드 설정
             session.setPassword(server_passwd);
