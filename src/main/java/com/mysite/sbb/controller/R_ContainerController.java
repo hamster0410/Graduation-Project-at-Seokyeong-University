@@ -3,6 +3,7 @@ package com.mysite.sbb.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mysite.sbb.AddressConfigure;
 import com.mysite.sbb.entity.Question;
 import com.mysite.sbb.entity.R_Container;
 import com.mysite.sbb.entity.SiteUser;
@@ -28,13 +29,14 @@ import java.util.Map;
 public class R_ContainerController {
     private final UserService userService;
     private final R_containerService rContainerService;
+    private final AddressConfigure addressConfigure;
 
     @GetMapping("connect")
     public String connect(@AuthenticationPrincipal UserDetails principaldetail) {
         String username = principaldetail.getUsername();
         SiteUser siteUser = this.userService.getUser(username);
         int portNumber = rContainerService.getRcontainer(siteUser).getPortNumber();
-        return "redirect:http://172.30.1.16:"+String.valueOf(portNumber);
+        return "redirect:http://"+addressConfigure.getsrvaddress() + ":"+String.valueOf(portNumber);
     }
 
     @PostMapping("/create")

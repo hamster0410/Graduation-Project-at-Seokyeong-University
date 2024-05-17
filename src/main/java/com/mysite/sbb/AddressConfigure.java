@@ -10,7 +10,16 @@ import org.springframework.stereotype.Service;
 public class AddressConfigure {
     @Value("${myAddress}")
     private String address;
+
+    @Value("${srvAddress}")
+    private String srvaddress;
+
     public String getAddress() {
         return address;
+    }
+
+
+    public String getsrvaddress() {
+        return srvaddress;
     }
 }

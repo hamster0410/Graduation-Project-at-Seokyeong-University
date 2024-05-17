@@ -86,7 +86,7 @@
         <tr class="text-center" th:each="shinyApp, loop : ${paging}">
             <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
             <td class="text-start">
-                <a th:href="@{|http://${@environment.getProperty('myAddress')}:3838/sample-apps/${shinyApp.author.username}/${shinyApp.subject}|}" th:text="${shinyApp.subject}"></a>
+                <a th:href="@{|http://${@environment.getProperty('srvAddress')}:3838/sample-apps/${shinyApp.author.username}/${shinyApp.subject}|}" th:text="${shinyApp.subject}"></a>
                 <span class="text-danger small ms-2" th:text="${#lists.size(shinyApp.voter)}"></span>
             </td>
             <td th:text="${shinyApp.content}"></td>
