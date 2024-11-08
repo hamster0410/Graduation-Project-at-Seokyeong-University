@@ -1,7 +1,8 @@
 # R언어 학습 커뮤니티
+<br/>
+<br/>
 
 # 📃개요
-
 - 프로젝트 목적
 - 프로젝트 아이디어 및 배경 설명
 - Flow Chart
@@ -10,20 +11,26 @@
 - ERD 설계
 - 동작 화면
 - issue 사항
+<br/>
+<br/>
 
 # 📌 프로젝트 목적
 
 - 서경대 컴퓨터공학과 복수전공 졸업작품을 위해 개발하였습니다.
 - 국비교육(클라우드 엔지니어링)과 복수전공 과정 동안 배운 지식들을 최대한 활용한 웹 서비스 개발 하는것입니다.
 - 웹에서 코딩하고 소통할 수 있는 코딩 커뮤니티를 개발하는 것이 목적입니다.
+<br/>
+<br/>
 
 # 💡 아이디어 및 배경
 
 - 빅데이터 시장의 증가와 데이터 분석가에 대한 수요 증가하는 추세입니다.
 - 그에 다른 데이터 분석 언어인 R에 대한 사람들의 수요가 커질 것으로 예상합니다.
 - 코딩을 처음 접하는 사람들이 R에 대해 공부하고 소통할 수 있는 커뮤니티 구축하면 좋겠다는 생각이 들었습니다.
+<br/>
+<br/>
 
-#  <img src="https://github.com/user-attachments/assets/7214e980-8399-4a69-9fe2-4e9ac047ac8a" alt="Flow Chart" style="width:30px; height:auto;"> Flow Chart
+#  <img src="https://github.com/user-attachments/assets/7214e980-8399-4a69-9fe2-4e9ac047ac8a" alt="Flow Chart" style="width:30px; height:auto;">  Flow Chart
 
 - 세션 기반 로그인 인증 구현 - redis 서버에 세션 저장
 - 웹 게시판 CRUD, 댓글, 좋아요, 동영상 링크 업로드
@@ -34,6 +41,8 @@
 
 ![제목을-입력해주세요_-002 (1)](https://github.com/user-attachments/assets/96099b41-e373-4f74-9abc-0d841395c690)
 
+<br/>
+<br/>
 
 # 💻 시스템 스펙 및 설정
 
@@ -136,11 +145,79 @@ RUN apt-get update && \
     libcurl4-openssl-dev \
     libxml2-dev \
 ```
+<br/>
+<br/>
 
 # <img src="https://github.com/user-attachments/assets/d9c862bb-d681-4788-9233-36db34292c38" alt="사용된 기술 스택" width="40"> 사용된 기술 스택
 
 ![%EC%A0%9C%EB%AA%A9%EC%9D%84-%EC%9E%85%EB%A0%A5%ED%95%B4%EC%A3%BC%EC%84%B8%EC%9A%94_-001](https://github.com/user-attachments/assets/ccc954de-18ad-47f7-a890-e495396d0d97)
+<br/>
+<br/>
 
 # 🧱  ERD 설계
 
 ![Untitled_(1)](https://github.com/user-attachments/assets/bbbdbee6-fd84-4b42-b3e4-d14e4b68acf7)
+
+
+# :fire: 동작화면
+
+### 기본웹사이트
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/3c8b961d-22d9-4e4b-a3db-d0ce4db2b97c" alt="기본 웹사이트" style="display: block; margin: auto; border: 2px solid #000;">
+</p>
+<br/>
+
+### 기본 게시판
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/0f8aa01c-21af-411c-8ae6-897e0495464b" style="display: block; margin: auto; border: 2px solid #000;">
+</p>
+<br/>
+
+### 유튜브 게시판 댓글
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/ed10fbda-fa55-4dd0-8b3d-7574caebeaec" style="display: block; margin: auto; border: 2px solid #000;">
+</p>
+<br/>
+
+### 도서 검색
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/de59b979-6102-4d82-82b5-cbef96a480ca" style="display: block; margin: auto; border: 2px solid #000;">
+</p>
+<br/>
+
+### 회원 코딩 컨테이너 생성
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/7e26dd2a-5112-4e02-b622-9759660a01c9" style="display: block; margin: auto; border: 2px solid #000;">
+</p>
+<br/>
+
+### R언어 활용 앱 코딩
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/965803a5-9162-4ce2-ac6c-08b2193d6e9e" style="display: block; margin: auto; border: 2px solid #000;">
+</p>
+<br/>
+
+### 앱 공유
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/e425d0c4-98af-4e85-a5df-d29de6a97a83" style="display: block; margin: auto; border: 2px solid #000;">
+</p>
+<br/>
+
+### 앱 확인
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/c80cb620-c00b-4bc4-9396-f707426af33d" style="display: block; margin: auto; border: 2px solid #000;">
+</p>
+<br/>
+
+### 앱 회수 및 삭제
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/72e7258f-5382-4c6d-9178-c0fb98c4d644" style="display: block; margin: auto; border: 2px solid #000;">
+</p>
+<br/>
+<br/>
+
+# :mag: issue 사항
+- 서버간 통신 불완전할 시 시스템 에러처리 미흡한 것 같습니다. 
+- 사용자간 R라이브러리가 다를 시 에러가 발생합니다. 개별 사용자간 시스템을 따로 구축해야 합니다. 
+- 사용자간 소통이 게시판을 제외하면 미흡하였습니다. 
+
